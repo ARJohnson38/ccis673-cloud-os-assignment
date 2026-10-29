@@ -1,6 +1,6 @@
 {
   "name": "ccis673-cloud-os-assignment2",
-  "main": "src/worker.js",
+  "main": "worker.js",
   "compatibility_date": "2026-10-29",
   "assets": {
     "directory": "./public",
