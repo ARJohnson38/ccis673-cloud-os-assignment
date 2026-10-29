@@ -1,0 +1,32 @@
+[
+  {
+    "concurrent_requests": 48,
+    "payload_kb": 166,
+    "target_ms": 140.564,
+    "predicted_ms": 142.011
+  },
+  {
+    "concurrent_requests": 24,
+    "payload_kb": 699,
+    "target_ms": 156.409,
+    "predicted_ms": 163.308
+  },
+  {
+    "concurrent_requests": 50,
+    "payload_kb": 687,
+    "target_ms": 222.451,
+    "predicted_ms": 208.376
+  },
+  {
+    "concurrent_requests": 74,
+    "payload_kb": 194,
+    "target_ms": 193.386,
+    "predicted_ms": 191.899
+  },
+  {
+    "concurrent_requests": 49,
+    "payload_kb": 460,
+    "target_ms": 186.861,
+    "predicted_ms": 179.231
+  }
+]

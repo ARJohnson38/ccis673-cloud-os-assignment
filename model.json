@@ -1,0 +1,39 @@
+{
+  "model_version": "1.0.0",
+  "training_seed": 673,
+  "target": "synthetic_latency_ms",
+  "units": "ms",
+  "feature_names": [
+    "concurrent_requests",
+    "payload_kb"
+  ],
+  "feature_ranges": {
+    "concurrent_requests": [
+      1,
+      100
+    ],
+    "payload_kb": [
+      1,
+      1024
+    ]
+  },
+  "preprocessing": {
+    "method": "standardize",
+    "means": [
+      51.651041666666664,
+      517.3385416666666
+    ],
+    "stds": [
+      28.93847818646074,
+      303.48459765619066
+    ]
+  },
+  "intercept": 190.88313953181543,
+  "coefficients": [
+    51.77003623587116,
+    36.57322803579089
+  ],
+  "training_rows": 192,
+  "test_rows": 48,
+  "warning": "Synthetic demonstration, not a validated predictor of actual Azure latency"
+}

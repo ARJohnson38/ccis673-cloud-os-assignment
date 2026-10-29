@@ -1,0 +1,8 @@
+{
+  "seed": 673,
+  "train_rows": 192,
+  "test_rows": 48,
+  "baseline": "training-target mean",
+  "baseline_mae_ms": 49.7799,
+  "model_mae_ms": 6.256
+}
