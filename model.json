@@ -1,5 +1,5 @@
 {
-  "model_version": "1.0.0",
+  "model_version": "1.0.1",
   "training_seed": 673,
   "target": "synthetic_latency_ms",
   "units": "ms",
