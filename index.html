@@ -1,1 +1,165 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="CCIS-673 Cloud OS learning project"><title>Project introduction | Cloud OS Lab</title><link rel="stylesheet" href="assets/style.css"></head><body><header><h1>Cloud OS Lab Dashboard</h1><nav aria-label="Main navigation"><a href="index.html" aria-current="page">Introduction</a><a href="progress.html">Progress</a><a href="architecture.html">Architecture</a><a href="/predict.html">ML Prediction</a></nav></header><main><h2>Project introduction</h2><section><h3>What this project demonstrates</h3><p>This three-page website explores the operating-system ideas behind cloud hosting: resource management, deployment automation, security boundaries, and service availability.</p><p>The project uses static HTML, CSS, and JavaScript. It does not need a database, a paid virtual machine, or personal information.</p></section><div class="grid"><div class="card"><h3>Build</h3><p>Develop and test locally, then publish through a GitHub repository.</p></div><div class="card"><h3>Deploy</h3><p>Assignment 1 was hosted on Cloudflare Workers. Assignment 2 targets Cloudflare Workers Free with a managed API.</p></div><div class="card"><h3>Evaluate</h3><p>Inspect workflow logs, headers, routing, and deployment changes.</p></div></div><section><h3>Privacy note</h3><p>The checklist on the Progress page is stored only in this browser's local storage. It is not sent to a server.</p><a href="progress.html">Open the interactive progress tracker</a></section></main><footer>CCIS-673 | Public demonstration content only | No personal data collected</footer></body></html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cloud OS Assignment 2 | ML Predictor</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f1f5f9;
+      color: #17365d;
+    }
+    header {
+      background: #17365d;
+      color: white;
+      padding: 25px;
+    }
+    main {
+      max-width: 850px;
+      margin: 35px auto;
+      padding: 0 18px;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px #00000012;
+    }
+    label {
+      display: block;
+      margin: 18px 0 8px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #aab9c8;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+    button {
+      margin-top: 22px;
+      background: #1768ad;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 13px 24px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:disabled { opacity: .6; cursor: wait; }
+    #result { margin-top: 20px; }
+    .success { color: #146c43; }
+    .error { color: #b42318; }
+    footer { text-align: center; padding: 20px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Cloud OS Assignment 2</h1>
+    <p>Machine Learning Latency Prediction Dashboard</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>About This Project</h2>
+      <p>
+        This project demonstrates a small machine learning
+        model deployed through a Cloudflare Worker API.
+        Predictions use synthetic request workload data.
+      </p>
+      <p>
+        The model is educational and does not predict
+        actual cloud platform performance.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Predict Request Latency</h2>
+
+      <form id="predictionForm">
+        <label for="requests">Concurrent Requests</label>
+        <input id="requests" type="number"
+               min="1" step="1" value="10" required>
+
+        <label for="payload">Payload Size (KB)</label>
+        <input id="payload" type="number"
+               min="0" step="any" value="50" required>
+
+        <button id="predictButton" type="submit">
+          Predict Latency
+        </button>
+      </form>
+
+      <div id="result" role="status" aria-live="polite"></div>
+    </section>
+
+    <section class="card">
+      <h2>API Information</h2>
+      <p><strong>Health:</strong> /api/health</p>
+      <p><strong>Prediction:</strong> POST /api/predict</p>
+      <p><strong>Model version:</strong> 1.0.0</p>
+      <p><strong>Hosting:</strong> Cloudflare Workers</p>
+    </section>
+  </main>
+
+  <footer>
+    CCIS-673 | Cloud OS | Synthetic demonstration
+  </footer>
+
+  <script>
+    const form = document.getElementById("predictionForm");
+    const result = document.getElementById("result");
+    const button = document.getElementById("predictButton");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const concurrent_requests =
+        Number(document.getElementById("requests").value);
+      const payload_kb =
+        Number(document.getElementById("payload").value);
+
+      result.className = "";
+      result.textContent = "Calculating prediction...";
+      button.disabled = true;
+
+      try {
+        const response = await fetch("/api/predict", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            concurrent_requests,
+            payload_kb
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.error?.message || "Prediction failed"
+          );
+        }
+
+        result.className = "success";
+        result.textContent =
+          `Predicted latency: ${data.prediction_ms} ms ` +
+          `(Model version: ${data.model_version})`;
+      } catch (error) {
+        result.className = "error";
+        result.textContent = `Error: ${error.message}`;
+      } finally {
+        button.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
